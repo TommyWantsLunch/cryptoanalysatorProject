@@ -52,7 +52,6 @@ public class BruteForce {
             int counter = 0;
             char[] copyOfBufferForTest = Arrays.copyOf(smallBufferForTests, smallBufferForTests.length);
 
-
             //выбирается ключ
             for (int i = 0; i < 75; i++) {
                 key = i;
@@ -69,35 +68,13 @@ public class BruteForce {
                     }
                 }
 
-                //cоздаем лист с дешифрованными словами, для сравнения их с часто используемыми словами
+                //перевели буффер в строку для стринговых методов и удобной работы
                 String stringWithDecryptedBuffer = new String(smallBufferForTests);
-                String[] arrayForDecryptedList = stringWithDecryptedBuffer.split(" ");
-                List<String> listWithDecryptedText = new ArrayList<>();
-                for (String s: arrayForDecryptedList) {
-                    listWithDecryptedText.add(s.toLowerCase());
-                }
 
-                //сравниваем слова из дешифрованного листа с часто используемыми словами
-                for(String s: listWithDecryptedText) {
-                    if(frequentlyUsedWords.contains(s)) {
-                        counter = counter + 1;
-                    }
-                }
-
+                //сравниваем с самыми часто используемыми словами
+                counter = checkMatchesWithFrequentlyUsedWords(stringWithDecryptedBuffer, frequentlyUsedWords, counter);
                 //сравниваем по правилу "точка - пробел - большая буква"
-                String lettersForCheckRule = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя!?:;-.,\" ";
-                char[] chars2 = lettersForCheckRule.toCharArray();
-                List<Character> listForLettersForCheck = new ArrayList<>();
-                for(char c: chars2) {
-                    listForLettersForCheck.add(c);
-                }
-                int indexOfDot = stringWithDecryptedBuffer.indexOf(".");
-                while(indexOfDot != -1 && indexOfDot < 9998) {
-                    if(stringWithDecryptedBuffer.charAt(indexOfDot + 1) == ' ' && !listForLettersForCheck.contains(stringWithDecryptedBuffer.charAt(indexOfDot + 2))){
-                        counter = counter + 1;
-                    }
-                    indexOfDot = stringWithDecryptedBuffer.indexOf(".", indexOfDot + 1);
-                }
+                counter = checkDotSpaceUpperLetter(stringWithDecryptedBuffer, counter);
 
                 //вывод общей информации, запись в мапу ключ-совпадения, возврат маленького буффера к первоначальному виду до дешифровки для следующего ключа, обнуление счетчика для следующего ключа
                 System.out.println("По ключу " + key + " количество совпадений: " + counter);
@@ -266,7 +243,6 @@ public class BruteForce {
         }
         return 0;
     }
-
     public static int rightKey(Map<Integer, Integer> map) {
         int rightKey = 0;
         int maxValue = 0;
@@ -281,7 +257,35 @@ public class BruteForce {
         }
         return rightKey;
     }
-
+    public static int checkDotSpaceUpperLetter(String str, int counter) {
+        String lettersForCheckRule = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя!?:;-.,\" ";
+        char[] chars2 = lettersForCheckRule.toCharArray();
+        List<Character> listForLettersForCheck = new ArrayList<>();
+        for(char c: chars2) {
+            listForLettersForCheck.add(c);
+        }
+        int indexOfDot = str.indexOf(".");
+        while(indexOfDot != -1 && indexOfDot < 9998) {
+            if(str.charAt(indexOfDot + 1) == ' ' && !listForLettersForCheck.contains(str.charAt(indexOfDot + 2))){
+                counter = counter + 1;
+            }
+            indexOfDot = str.indexOf(".", indexOfDot + 1);
+        }
+        return counter;
+    }
+    public static int checkMatchesWithFrequentlyUsedWords(String str, List<String> list, int counter) {
+    String[] arrayForDecryptedList = str.split(" ");
+    List<String> listWithDecryptedText = new ArrayList<>();
+    for (String s: arrayForDecryptedList) {
+        listWithDecryptedText.add(s.toLowerCase());
+    }
+    for(String s: listWithDecryptedText) {
+        if(list.contains(s)) {
+            counter = counter + 1;
+        }
+    }
+    return counter;
+}
 
 
 }
