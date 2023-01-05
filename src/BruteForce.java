@@ -13,6 +13,7 @@ public class BruteForce {
         System.out.println("\nВведите полный путь к файлу с текстом, к которому нужно подобрать ключ дешифровки." +
                 "\nПример ввода: C:\\Users\\projects\\project.txt");
 
+        //проверка на верно указанный путь
         boolean isRightPath = false;
         while (!isRightPath) {
             String tmp = Main.scanner.nextLine();
@@ -24,7 +25,7 @@ public class BruteForce {
                 System.out.println("Введите полный путь к существующему файлу с текстом, который нужно зашифровать.");
             }
         }
-
+        //создание нового файла
         String outputPath = getNewFileName(path);
         if (Files.notExists(Path.of(outputPath))) {
             Files.createFile(Path.of(outputPath));
@@ -105,7 +106,6 @@ public class BruteForce {
 
         }
     }
-
 
     public static String getNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");

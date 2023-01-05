@@ -5,7 +5,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("\nЕсли хотите использовать программу в режиме \"шифрование\", введите 1." +
                 "\nЕсли хотите использовать программу в режиме \"дешифрование\", введите 2." +
-                "\nЕсли хотите использовать программу в режиме \"bruteforce\", введите 3.");
+                "\nЕсли хотите использовать программу в режиме \"bruteforce\", введите 3." +
+                "\nЕсли хотите использовать программу в режиме \"статистический анализ\", введите 4.");
 
 
         while(true) {
@@ -22,8 +23,12 @@ public class Main {
                 BruteForce.bruteforce();
                 break;
             }
-            if(!tmp.equals("1") || !tmp.equals("2") || !tmp.equals("3")) {
-                System.out.println("Введите 1, 2 или 3 для выбора режима программы, где 1 - режим \"шифрование\", где 2 - режим \"дешифрование\" и где 3 - режим \"brutforce\"");
+            if (tmp.equals("4")) {
+                StatisticalAnalysis.statisticalAnalysis();
+                break;
+            }
+            if(!tmp.equals("1") || !tmp.equals("2") || !tmp.equals("3") || !tmp.equals("4")) {
+                System.out.println("Введите 1, 2, 3 или 4 для выбора режима программы, где 1 - режим \"шифрование\", где 2 - режим \"дешифрование\", где 3 - режим \"brutforce\" и где 4 - режим \"статистический анализ\"");
             }
         }
     }
