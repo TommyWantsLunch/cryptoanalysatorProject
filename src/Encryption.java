@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,35 +12,11 @@ public class Encryption {
     private static int key;
 
     public static void encryption() throws IOException {
-        System.out.println("\nВведите полный путь к файлу с текстом, который нужно зашифровать." +
-                "\nПример ввода: C:\\Users\\projects\\project.txt");
 
-        boolean isRightPath = false;
-        while (!isRightPath) {
-            String tmp = Main.scanner.nextLine();
+        path = pathForEncryption();
+        key = keyForEncryption();
 
-            if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
-                path = tmp;
-                break;
-            } else {
-                System.out.println("Введите полный путь к существующему файлу с текстом, который нужно зашифровать.");
-            }
-        }
-
-        boolean isRightKeyFormat = false;
-        while (!isRightKeyFormat) {
-            System.out.println("\nВведите ключ в виде целого числа.");
-            String tmp = Main.scanner.nextLine();
-
-            try {
-                key = Integer.parseInt(tmp);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Неправильный формат ввода ключа.");
-            }
-        }
-
-        String outputPath = getNewFileName(path);
+        String outputPath = createNewFileName(path);
         if (Files.notExists(Path.of(outputPath))) {
             Files.createFile(Path.of(outputPath));
         }
@@ -76,7 +53,47 @@ public class Encryption {
 
     }
 
-    public static String getNewFileName(String oldFileName) {
+    private static int keyForEncryption() {
+        boolean isRightKeyFormat = false;
+        int methodKey = 0;
+        while (!isRightKeyFormat) {
+            System.out.println("\nВведите ключ в виде целого числа.");
+            String tmp = Main.scanner.nextLine();
+
+            try {
+                methodKey = Integer.parseInt(tmp);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Неправильный формат ввода ключа.");
+            }
+        }
+        return methodKey;
+    }
+
+    private static String pathForEncryption() {
+        System.out.println("\nВведите полный путь к файлу с текстом, который нужно зашифровать." +
+                "\nПример ввода: C:\\Users\\projects\\project.txt");
+
+        boolean isRightPath = false;
+        String methodPath = "";
+        while (!isRightPath) {
+            try {
+                String tmp = Main.scanner.nextLine();
+                if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
+                    methodPath = tmp;
+                    break;
+                } else {
+                    System.out.println("Введите полный путь к существующему файлу с текстом, который нужно зашифровать.");
+                }
+            } catch (InvalidPathException e) {
+                System.out.println("\nВведите полный путь к файлу с текстом, который нужно зашифровать." +
+                        "\nПример ввода: C:\\Users\\projects\\project.txt");
+            }
+        }
+        return methodPath;
+    }
+
+    public static String createNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
         String newFileName = oldFileName.substring(0, dotIndex) + "Encrypted" + oldFileName.substring(dotIndex);
         return newFileName;

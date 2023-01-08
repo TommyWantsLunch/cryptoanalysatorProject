@@ -2,46 +2,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class StatisticalAnalysis {
 
     private static String mainTextPath = "";
-    private static String textWithStatistic = "";
+    private static String textWithStatisticPath = "";
 
     public static void statisticalAnalysis() throws IOException {
 
-        System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать через статистический анализ." +
-                "\nПример ввода: C:\\Users\\projects\\project.txt");
-
-        boolean isRightPath = false;
-        while (!isRightPath) {
-            String tmp = Main.scanner.nextLine();
-
-            if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
-                mainTextPath = tmp;
-                break;
-            } else {
-                System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать через статистический анализ.");
-            }
-        }
-
-        System.out.println("\nВведите полный путь к файлу с текстом, на основе которого будет проведен статистический анализ." +
-                "\nПример ввода: C:\\Users\\projects\\project.txt");
-
-        boolean isRightExtraPath = false;
-        while (!isRightExtraPath) {
-            String tmp = Main.scanner.nextLine();
-
-            if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
-                textWithStatistic = tmp;
-                break;
-            } else {
-                System.out.println("Введите полный путь к существующему файлу с текстом, на основе которого будет проведен статистический анализ.");
-            }
-        }
+        mainTextPath = pathForMainText();
+        textWithStatisticPath = pathForTextWithStatistic();
 
         String outputPath = getNewFileName(mainTextPath);
         if (Files.notExists(Path.of(outputPath))) {
@@ -50,8 +23,8 @@ public class StatisticalAnalysis {
 
         //testReader считывает с файла, на основе которого будет происходить дешифровка
         //reader считывает с файла, который нужно дешифровать, но этот reader себя исчерпает пока будет делаться подсчет букв
-        //readerForWriter считывает с файла, который дешифруется по ходу считывания
-        try(FileReader testReader = new FileReader(textWithStatistic);
+        //readerForWriter считывает с файла, и по ходу считывания идет дешифровка
+        try(FileReader testReader = new FileReader(textWithStatisticPath);
             FileReader reader = new FileReader(mainTextPath);
             FileReader readerForWriter = new FileReader(mainTextPath);
             FileWriter writer = new FileWriter(outputPath)) {
@@ -130,6 +103,50 @@ public class StatisticalAnalysis {
 
     }
 
+    private static String pathForTextWithStatistic() {
+        System.out.println("\nВведите полный путь к файлу с текстом, на основе которого будет проведен статистический анализ." +
+                "\nПример ввода: C:\\Users\\projects\\project.txt");
+
+        boolean isRightExtraPath = false;
+        String methodPath = "";
+        while (!isRightExtraPath) {
+            try {
+                String tmp = Main.scanner.nextLine();
+                if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
+                    methodPath = tmp;
+                    break;
+                } else {
+                    System.out.println("Введите полный путь к существующему файлу с текстом, на основе которого будет проведен статистический анализ.");
+                }
+            }catch (InvalidPathException e) {
+                System.out.println("\nВведите полный путь к файлу с текстом, на основе которого будет проведен статистический анализ." +
+                        "\nПример ввода: C:\\Users\\projects\\project.txt");
+            }
+        }
+        return methodPath;
+    }
+    private static String pathForMainText() {
+        System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать через статистический анализ." +
+                "\nПример ввода: C:\\Users\\projects\\project.txt");
+
+        boolean isRightPath = false;
+        String methodPath = "";
+        while (!isRightPath) {
+            try {
+                String tmp = Main.scanner.nextLine();
+                if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
+                    methodPath = tmp;
+                    break;
+                } else {
+                    System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать через статистический анализ.");
+                }
+            }catch (InvalidPathException e) {
+                System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать через статистический анализ." +
+                        "\nПример ввода: C:\\Users\\projects\\project.txt");
+            }
+        }
+        return methodPath;
+    }
     public static String getNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
         String newFileName = oldFileName.substring(0, dotIndex) + "DecryptedWithStatisticAnalys" + oldFileName.substring(dotIndex);

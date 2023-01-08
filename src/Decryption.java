@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,33 +12,9 @@ public class Decryption {
     private static int key;
 
     public static void decryption() throws IOException {
-        System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать." +
-                "\nПример ввода: C:\\Users\\projects\\project.txt");
 
-        boolean isRightPath = false;
-        while (!isRightPath) {
-            String tmp = Main.scanner.nextLine();
-
-            if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
-                path = tmp;
-                break;
-            } else {
-                System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать.");
-            }
-        }
-
-        boolean isRightKeyFormat = false;
-        while (!isRightKeyFormat) {
-            System.out.println("\nВведите ключ в виде целого числа.");
-            String tmp = Main.scanner.nextLine();
-
-            try {
-                key = Integer.parseInt(tmp);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Неправильный формат ввода ключа.");
-            }
-        }
+        path = pathForDecryption();
+        key = keyForDecryption();
 
         String outputPath = getNewFileName(path);
         if (Files.notExists(Path.of(outputPath))) {
@@ -76,12 +53,49 @@ public class Decryption {
 
     }
 
+    private static int keyForDecryption() {
+        boolean isRightKeyFormat = false;
+        int methodKey = 0;
+        while (!isRightKeyFormat) {
+            System.out.println("\nВведите ключ в виде целого числа.");
+            String tmp = Main.scanner.nextLine();
+
+            try {
+                methodKey = Integer.parseInt(tmp);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Неправильный формат ввода ключа.");
+            }
+        }
+        return methodKey;
+    }
+    private static String pathForDecryption() {
+        System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать." +
+                "\nПример ввода: C:\\Users\\projects\\project.txt");
+
+        boolean isRightPath = false;
+        String methodPath = "";
+        while (!isRightPath) {
+            try {
+                String tmp = Main.scanner.nextLine();
+                if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
+                    methodPath = tmp;
+                    break;
+                } else {
+                    System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать.");
+                }
+            }catch (InvalidPathException e) {
+                System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать." +
+                        "\nПример ввода: C:\\Users\\projects\\project.txt");
+            }
+        }
+        return methodPath;
+    }
     public static String getNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
         String newFileName = oldFileName.substring(0, dotIndex) + "Decrypted" + oldFileName.substring(dotIndex);
         return newFileName;
     }
-
     public static int checkKey(int key, String letters) {
         int kkey = key;
         if (key < letters.length()) {
@@ -93,7 +107,6 @@ public class Decryption {
             return kkey;
         }
     }
-
     public static int newIndex(int key, int currentIndex, String letters) {
         int newIndex = currentIndex - key;
         if (newIndex == letters.length()) {

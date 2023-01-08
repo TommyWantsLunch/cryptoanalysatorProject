@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -10,21 +11,9 @@ public class BruteForce {
     private static int key;
 
     public static void bruteforce() throws IOException {
-        System.out.println("\nВведите полный путь к файлу с текстом, к которому нужно подобрать ключ дешифровки." +
-                "\nПример ввода: C:\\Users\\projects\\project.txt");
 
-        //проверка на верно указанный путь
-        boolean isRightPath = false;
-        while (!isRightPath) {
-            String tmp = Main.scanner.nextLine();
+        path = pathForBruteforce();
 
-            if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
-                path = tmp;
-                break;
-            } else {
-                System.out.println("Введите полный путь к существующему файлу с текстом, который нужно зашифровать.");
-            }
-        }
         //создание нового файла
         String outputPath = getNewFileName(path);
         if (Files.notExists(Path.of(outputPath))) {
@@ -107,6 +96,28 @@ public class BruteForce {
         }
     }
 
+    private static String pathForBruteforce() {
+        System.out.println("\nВведите полный путь к файлу с текстом, к которому нужно подобрать ключ дешифровки." +
+                "\nПример ввода: C:\\Users\\projects\\project.txt");
+
+        boolean isRightPath = false;
+        String methodPath = "";
+        while (!isRightPath) {
+            try {
+                String tmp = Main.scanner.nextLine();
+                if (Files.isRegularFile(Path.of(tmp)) && Files.exists(Path.of(tmp))) {
+                    methodPath = tmp;
+                    break;
+                } else {
+                    System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать.");
+                }
+            } catch (InvalidPathException e) {
+                System.out.println("\nВведите полный путь к файлу с текстом, к которому нужно подобрать ключ дешифровки." +
+                        "\nПример ввода: C:\\Users\\projects\\project.txt");
+            }
+        }
+        return methodPath;
+    }
     public static String getNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
         String newFileName = oldFileName.substring(0, dotIndex) + "Bruteforced" + oldFileName.substring(dotIndex);
