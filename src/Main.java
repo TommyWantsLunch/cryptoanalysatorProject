@@ -8,7 +8,6 @@ public class Main {
                 "\nЕсли хотите использовать программу в режиме \"bruteforce\", введите 3." +
                 "\nЕсли хотите использовать программу в режиме \"статистический анализ\", введите 4.");
 
-
         while(true) {
             String tmp = scanner.nextLine();
             if (tmp.equals("1")) {
