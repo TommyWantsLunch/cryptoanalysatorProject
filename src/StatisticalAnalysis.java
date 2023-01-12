@@ -40,6 +40,7 @@ public class StatisticalAnalysis {
             }
 
             //массивы для сохранения результатов. двумерный массив делать не вижу смысла, а в мапе очень сложно доставать нужные значения в порядке убывания, скорее всего в силу неопытности
+            //Lots of magical numbers, all of them must be static final vars
             String[] arrayForMainLetters = new String[75];
             String[] arrayForExampleLetters = new String[75];
             int[] arrayForMainCounting = new int[75];
@@ -104,6 +105,7 @@ public class StatisticalAnalysis {
     }
 
     private static String pathForTextWithStatistic() {
+        //text in var
         System.out.println("\nВведите полный путь к файлу с текстом, на основе которого будет проведен статистический анализ." +
                 "\nПример ввода: C:\\Users\\projects\\project.txt");
 
@@ -116,9 +118,11 @@ public class StatisticalAnalysis {
                     methodPath = tmp;
                     break;
                 } else {
+                    //text in var
                     System.out.println("Введите полный путь к существующему файлу с текстом, на основе которого будет проведен статистический анализ.");
                 }
             }catch (InvalidPathException e) {
+                //text in var
                 System.out.println("\nВведите полный путь к файлу с текстом, на основе которого будет проведен статистический анализ." +
                         "\nПример ввода: C:\\Users\\projects\\project.txt");
             }
@@ -126,6 +130,7 @@ public class StatisticalAnalysis {
         return methodPath;
     }
     private static String pathForMainText() {
+        //text in var
         System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать через статистический анализ." +
                 "\nПример ввода: C:\\Users\\projects\\project.txt");
 
@@ -138,9 +143,11 @@ public class StatisticalAnalysis {
                     methodPath = tmp;
                     break;
                 } else {
+                    //text in var
                     System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать через статистический анализ.");
                 }
             }catch (InvalidPathException e) {
+                //text in var
                 System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать через статистический анализ." +
                         "\nПример ввода: C:\\Users\\projects\\project.txt");
             }

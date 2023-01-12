@@ -25,6 +25,7 @@ public class Encryption {
              FileWriter writer = new FileWriter(outputPath)) {
             char[] buffer = new char[128000];
 
+            //better to create outside of method so it would be possible to easily change alphabet
             String letters = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя.,\":;-!? ";
             char[] chars = letters.toCharArray();
             List<Character> charsList = new ArrayList<>();
@@ -54,6 +55,7 @@ public class Encryption {
     }
 
     private static int keyForEncryption() {
+        //good but would be better to do validation in separate method
         boolean isRightKeyFormat = false;
         int methodKey = 0;
         while (!isRightKeyFormat) {
@@ -71,9 +73,11 @@ public class Encryption {
     }
 
     private static String pathForEncryption() {
+        //text in var
         System.out.println("\nВведите полный путь к файлу с текстом, который нужно зашифровать." +
                 "\nПример ввода: C:\\Users\\projects\\project.txt");
 
+        //validation in separate method
         boolean isRightPath = false;
         String methodPath = "";
         while (!isRightPath) {
@@ -83,6 +87,7 @@ public class Encryption {
                     methodPath = tmp;
                     break;
                 } else {
+                    //text in var
                     System.out.println("Введите полный путь к существующему файлу с текстом, который нужно зашифровать.");
                 }
             } catch (InvalidPathException e) {
@@ -95,6 +100,7 @@ public class Encryption {
 
     public static String createNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
+        //newFileName can be inlined, no need in new var
         String newFileName = oldFileName.substring(0, dotIndex) + "Encrypted" + oldFileName.substring(dotIndex);
         return newFileName;
     }

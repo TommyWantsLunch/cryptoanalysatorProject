@@ -29,6 +29,7 @@ public class BruteForce {
             List<String> frequentlyUsedWords = frequentlyUsedWords();
 
             //лист с основными буквами и символами
+            //same as in Encryption-Decryption
             String letters = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя.,\":;-!? ";
             char[] chars = letters.toCharArray();
             List<Character> charsList = new ArrayList<>();
@@ -43,6 +44,7 @@ public class BruteForce {
             char[] copyOfBufferForTest = Arrays.copyOf(smallBufferForTests, smallBufferForTests.length);
 
             //выбирается ключ
+            //75 is a magical number, it must be stored in static final variable with reasonable name
             for (int i = 0; i < 75; i++) {
                 key = i;
 
@@ -97,6 +99,7 @@ public class BruteForce {
     }
 
     private static String pathForBruteforce() {
+        //text in var
         System.out.println("\nВведите полный путь к файлу с текстом, к которому нужно подобрать ключ дешифровки." +
                 "\nПример ввода: C:\\Users\\projects\\project.txt");
 
@@ -109,9 +112,11 @@ public class BruteForce {
                     methodPath = tmp;
                     break;
                 } else {
+                    //text in var
                     System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать.");
                 }
             } catch (InvalidPathException e) {
+                //text in var
                 System.out.println("\nВведите полный путь к файлу с текстом, к которому нужно подобрать ключ дешифровки." +
                         "\nПример ввода: C:\\Users\\projects\\project.txt");
             }
@@ -120,11 +125,13 @@ public class BruteForce {
     }
     public static String getNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
+        //inline
         String newFileName = oldFileName.substring(0, dotIndex) + "Bruteforced" + oldFileName.substring(dotIndex);
         return newFileName;
     }
     public static List<String> frequentlyUsedWords() {
         List<String> frequentlyWords = new ArrayList<>();
+        //better to load this words from file to list; if want to hardcode, can be used List.of(...)
         frequentlyWords.add("и");
         frequentlyWords.add("в");
         frequentlyWords.add("не");
@@ -269,6 +276,7 @@ public class BruteForce {
         return rightKey;
     }
     public static int checkDotSpaceUpperLetter(String str, int counter) {
+        //same as in previous alphabet var, it is much duplicated
         String lettersForCheckRule = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя!?:;-.,\" ";
         char[] chars2 = lettersForCheckRule.toCharArray();
         List<Character> listForLettersForCheck = new ArrayList<>();
