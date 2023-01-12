@@ -25,6 +25,7 @@ public class Decryption {
              FileWriter writer = new FileWriter(outputPath)) {
             char[] buffer = new char[128000];
 
+            //this variable must be stored in some util class, because its duplicated and because comments on same position in Encryption
             String letters = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя.,\":;-!? ";
             char[] chars = letters.toCharArray();
             List<Character> charsList = new ArrayList<>();
@@ -57,6 +58,7 @@ public class Decryption {
         boolean isRightKeyFormat = false;
         int methodKey = 0;
         while (!isRightKeyFormat) {
+            //text in var
             System.out.println("\nВведите ключ в виде целого числа.");
             String tmp = Main.scanner.nextLine();
 
@@ -64,12 +66,14 @@ public class Decryption {
                 methodKey = Integer.parseInt(tmp);
                 break;
             } catch (NumberFormatException e) {
+                //text in var
                 System.out.println("Неправильный формат ввода ключа.");
             }
         }
         return methodKey;
     }
     private static String pathForDecryption() {
+        //text in var
         System.out.println("\nВведите полный путь к файлу с текстом, который нужно дешифровать." +
                 "\nПример ввода: C:\\Users\\projects\\project.txt");
 
@@ -82,6 +86,7 @@ public class Decryption {
                     methodPath = tmp;
                     break;
                 } else {
+                    //text in var
                     System.out.println("Введите полный путь к существующему файлу с текстом, который нужно дешифровать.");
                 }
             }catch (InvalidPathException e) {
@@ -93,6 +98,7 @@ public class Decryption {
     }
     public static String getNewFileName(String oldFileName) {
         int dotIndex = oldFileName.lastIndexOf(".");
+        //inline var
         String newFileName = oldFileName.substring(0, dotIndex) + "Decrypted" + oldFileName.substring(dotIndex);
         return newFileName;
     }
